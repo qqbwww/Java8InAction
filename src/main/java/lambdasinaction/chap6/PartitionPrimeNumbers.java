@@ -7,6 +7,9 @@ import java.util.stream.*;
 import static java.util.stream.Collectors.*;
 import static java.util.stream.Collector.Characteristics.*;
 
+/**
+ * 质数分区
+ */
 public class PartitionPrimeNumbers {
 
     public static void main(String ... args) {
@@ -15,17 +18,33 @@ public class PartitionPrimeNumbers {
 
     }
 
+    /**
+     * 质数分区
+     * @param n
+     * @return
+     */
     public static Map<Boolean, List<Integer>> partitionPrimes(int n) {
+        //生成2~n的数字,按质数分区
         return IntStream.rangeClosed(2, n).boxed()
                 .collect(partitioningBy(candidate -> isPrime(candidate)));
     }
 
+    /**
+     * 判断数字是否是质数的算法, 可以被2-质数平方根之间的值整除的就不是质数
+     * @param candidate
+     * @return
+     */
     public static boolean isPrime(int candidate) {
         return IntStream.rangeClosed(2, candidate-1)
                 .limit((long) Math.floor(Math.sqrt((double) candidate)) - 1)
                 .noneMatch(i -> candidate % i == 0);
     }
 
+    /**
+     * 使用自定义收集器分区质数
+     * @param n
+     * @return
+     */
     public static Map<Boolean, List<Integer>> partitionPrimesWithCustomCollector(int n) {
         return IntStream.rangeClosed(2, n).boxed().collect(new PrimeNumbersCollector());
     }
@@ -47,6 +66,9 @@ public class PartitionPrimeNumbers {
         return list;
     }
 
+    /**
+     * 自定义质数收集器
+     */
     public static class PrimeNumbersCollector
             implements Collector<Integer, Map<Boolean, List<Integer>>, Map<Boolean, List<Integer>>> {
 

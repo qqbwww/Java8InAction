@@ -6,6 +6,10 @@ import java.util.*;
 
 import static lambdasinaction.chap4.Dish.menu;
 
+
+/**
+ * 归约
+ */
 public class Reducing{
 
     public static void main(String...args){

@@ -2,11 +2,18 @@ package lambdasinaction.chap6;
 
 import java.util.*;
 
+/**
+ * 菜类
+ */
 public class Dish {
 
+    //菜名
     private final String name;
+    //是否蔬菜
     private final boolean vegetarian;
+    //热量
     private final int calories;
+    //类型
     private final Type type;
 
     public Dish(String name, boolean vegetarian, int calories, Type type) {

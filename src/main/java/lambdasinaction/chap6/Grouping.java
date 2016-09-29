@@ -20,10 +20,18 @@ public class Grouping {
         System.out.println("Caloric levels by type: " + caloricLevelsByType());
     }
 
+    /**
+     * 按菜类型分组
+     * @return
+     */
     private static Map<Dish.Type, List<Dish>> groupDishesByType() {
         return menu.stream().collect(groupingBy(Dish::getType));
     }
 
+    /**
+     * 按热量等级分组
+     * @return
+     */
     private static Map<CaloricLevel, List<Dish>> groupDishesByCaloricLevel() {
         return menu.stream().collect(
                 groupingBy(dish -> {
@@ -33,6 +41,10 @@ public class Grouping {
                 } ));
     }
 
+    /**
+     * 先按菜类型分组,再按热量细分
+     * @return
+     */
     private static Map<Dish.Type, Map<CaloricLevel, List<Dish>>> groupDishedByTypeAndCaloricLevel() {
         return menu.stream().collect(
                 groupingBy(Dish::getType,
@@ -45,10 +57,15 @@ public class Grouping {
         );
     }
 
+    //各个菜分组的数量
     private static Map<Dish.Type, Long> countDishesInGroups() {
         return menu.stream().collect(groupingBy(Dish::getType, counting()));
     }
 
+    /**
+     * 每个类型热量最好的菜品
+     * @return
+     */
     private static Map<Dish.Type, Optional<Dish>> mostCaloricDishesByType() {
         return menu.stream().collect(
                 groupingBy(Dish::getType,

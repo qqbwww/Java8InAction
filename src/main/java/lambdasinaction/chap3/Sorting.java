@@ -7,7 +7,7 @@ public class Sorting {
 
     public static void main(String...args){
 
-        // 1
+        // 1 构造需要排序的列表
         List<Apple> inventory = new ArrayList<>();
         inventory.addAll(Arrays.asList(new Apple(80,"green"), new Apple(155, "green"), new Apple(120, "red")));
 
@@ -18,7 +18,7 @@ public class Sorting {
         // reshuffling things a little
         inventory.set(1, new Apple(30, "green"));
         
-        // 2
+        // 2 匿名函数方式
         // [Apple{color='green', weight=30}, Apple{color='green', weight=80}, Apple{color='green', weight=155}]
         inventory.sort(new Comparator<Apple>() {
             public int compare(Apple a1, Apple a2){
@@ -29,7 +29,7 @@ public class Sorting {
         // reshuffling things a little
         inventory.set(1, new Apple(20, "red"));
         
-        // 3
+        // 3 Lambda表达式方式
         // [Apple{color='red', weight=20}, Apple{color='green', weight=30}, Apple{color='green', weight=155}]
         inventory.sort((a1, a2) -> a1.getWeight().compareTo(a2.getWeight()));
         System.out.println(inventory);
@@ -37,7 +37,7 @@ public class Sorting {
         // reshuffling things a little
         inventory.set(1, new Apple(10, "red"));
         
-        // 4
+        // 4 方法引用方式
         // [Apple{color='red', weight=10}, Apple{color='red', weight=20}, Apple{color='green', weight=155}]
         inventory.sort(comparing(Apple::getWeight));
         System.out.println(inventory);       

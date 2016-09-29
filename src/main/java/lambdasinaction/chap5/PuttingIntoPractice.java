@@ -7,8 +7,16 @@ import java.util.*;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
+/**
+ * 实战代码
+ */
 public class PuttingIntoPractice{
-    public static void main(String ...args){    
+
+
+    public static void main(String ...args){
+
+        //构建数据集
+
         Trader raoul = new Trader("Raoul", "Cambridge");
         Trader mario = new Trader("Mario","Milan");
         Trader alan = new Trader("Alan","Cambridge");

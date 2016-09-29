@@ -4,7 +4,11 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
+/**
+ * 实现自己的spliterator,统计单词示例
+ */
 public class WordCount {
+
 
     public static final String SENTENCE =
             " Nel   mezzo del cammin  di nostra  vita " +
@@ -16,6 +20,11 @@ public class WordCount {
         System.out.println("Found " + countWords(SENTENCE) + " words");
     }
 
+    /**
+     * 遍历以统计单词个数
+     * @param s
+     * @return
+     */
     public static int countWordsIteratively(String s) {
         int counter = 0;
         boolean lastSpace = true;
@@ -30,6 +39,11 @@ public class WordCount {
         return counter;
     }
 
+    /**
+     * 使用自定义spliterator统计单词个数
+     * @param s
+     * @return
+     */
     public static int countWords(String s) {
         //Stream<Character> stream = IntStream.range(0, s.length())
         //                                    .mapToObj(SENTENCE::charAt).parallel();
@@ -46,6 +60,10 @@ public class WordCount {
         return wordCounter.getCounter();
     }
 
+
+    /**
+     * 用来在遍历Character流式计数的类
+     */
     private static class WordCounter {
         private final int counter;
         private final boolean lastSpace;
@@ -55,6 +73,11 @@ public class WordCount {
             this.lastSpace = lastSpace;
         }
 
+        /**
+         * 上一个字符是空格,而当前遍历的字符不是空格时,将单词计数器加一
+         * @param c
+         * @return
+         */
         public WordCounter accumulate(Character c) {
             if (Character.isWhitespace(c)) {
                 return lastSpace ? this : new WordCounter(counter, true);
@@ -63,6 +86,11 @@ public class WordCount {
             }
         }
 
+        /**
+         * 合并两个WordCounter,把其计数器加起来
+         * @param wordCounter
+         * @return
+         */
         public WordCounter combine(WordCounter wordCounter) {
             return new WordCounter(counter + wordCounter.counter, wordCounter.lastSpace);
         }
@@ -72,6 +100,10 @@ public class WordCount {
         }
     }
 
+
+    /**
+     * String只能在词尾拆开。
+     */
     private static class WordCounterSpliterator implements Spliterator<Character> {
 
         private final String string;
@@ -81,6 +113,11 @@ public class WordCount {
             this.string = string;
         }
 
+        /**
+         * 如果还有字符要处理,则返回true
+         * @param action
+         * @return
+         */
         @Override
         public boolean tryAdvance(Consumer<? super Character> action) {
             action.accept(string.charAt(currentChar++));
@@ -89,13 +126,19 @@ public class WordCount {
 
         @Override
         public Spliterator<Character> trySplit() {
+
             int currentSize = string.length() - currentChar;
+            //返回null表示要解析的String以机构足够小,可以书序处理
             if (currentSize < 10) {
                 return null;
             }
+            //将试探拆分位置设定为要解析的String的中间
             for (int splitPos = currentSize / 2 + currentChar; splitPos < string.length(); splitPos++) {
+                //让拆分位置前进直到下一个空格
                 if (Character.isWhitespace(string.charAt(splitPos))) {
+                    //创建一个新WordCounterSpliterator来解析String从开始到拆分位置的 部分
                     Spliterator<Character> spliterator = new WordCounterSpliterator(string.substring(currentChar, splitPos));
+                    //将这个WordCounterSpliterator的起始位置设为拆分位置
                     currentChar = splitPos;
                     return spliterator;
                 }

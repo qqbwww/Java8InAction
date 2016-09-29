@@ -1,7 +1,13 @@
 package lambdasinaction.chap5;
+
+/**
+ *  交易员 domain
+ */
 public  class Trader{
-	
+
+	//交易员姓名
 	private String name;
+	//交易员来自的城市
 	private String city;
 
 	public Trader(String n, String c){
